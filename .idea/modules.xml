@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$USER_HOME$/Downloads/PyQt5_gpl-5.7/.idea/PyQt5_gpl-5.7.iml" filepath="$USER_HOME$/Downloads/PyQt5_gpl-5.7/.idea/PyQt5_gpl-5.7.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../anki/.idea/anki.iml" filepath="$PROJECT_DIR$/../anki/.idea/anki.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/transligator.iml" filepath="$PROJECT_DIR$/.idea/transligator.iml" />
+    </modules>
+  </component>
+</project>
