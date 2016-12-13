@@ -5,8 +5,6 @@ contained therein
 import sys
 #import main window obj from aqt
 from aqt import mw
-#import "show info" tool from utils.py
-from aqt.utils import getFile
 #import Qt Gui library
 from aqt.qt import *
 from aqt import editor
@@ -17,7 +15,7 @@ import dialog
 
 #function to execute when menu item is selected
 def doImportTerminologyFile():
-    (path, model, fieldList, ok) = ImportSettingsDialog().getDialogResult()
+    (path, model, fieldMap, ok) = ImportSettingsDialog().getDialogResult()
     if not ok:
         return
 
@@ -33,7 +31,6 @@ class ImportSettingsDialog(QDialog):
         self.terminologyDir = None
         # The number of fields in the note type we are using
         self.fieldCount = 0
-        self.populateModelList()
         self.exec_()
 
     def getDialogResult(self):
@@ -88,9 +85,6 @@ class ImportSettingsDialog(QDialog):
                 self.clearLayout(child.layout())
 
 
-#create new menu item "Import Terminology"
-action = QAction("Import Terminology", mw)
-# Connect signal "triggered" to slot "importTerminologyFile"
-action.triggered.connect(doImportTerminologyFile)
-#add to tools menu
+action = QAction("Media Import...", mw)
+mw.connect(action, pyqtSignal("triggered()"), doImportTerminologyFile)
 mw.form.menuTools.addAction(action)
