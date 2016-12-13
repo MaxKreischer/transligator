@@ -1,0 +1,8 @@
+Fisch		Fish
+Reh		Deer
+Krokodil	Crocodile
+Hund		Dog
+Katze		Cat
+Strauﬂ		Ostrich
+Schnecke	Snail
+Wurm		Worm

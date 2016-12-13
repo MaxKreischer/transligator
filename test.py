@@ -1,4 +1,13 @@
+fileName = '.\example_terminology.txt'
+lines = open(fileName, 'r').readlines()
 
-from PyQt5.QtCore import QT_VERSION_STR
+if fileName.endswith('.txt'):
+    print("Is text file")
+print(lines[0])
 
-print(QT_VERSION_STR)
+idx = lines[0].find("\t")
+nativeString = lines[0][0:idx]
+targetString = lines[0][idx:].lstrip()
+print(idx)
+print(nativeString)
+print(targetString)

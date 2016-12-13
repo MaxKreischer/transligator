@@ -10,6 +10,7 @@ from aqt.qt import *
 from aqt import editor
 from anki import cards
 from anki import notes
+from aqt.utils import showInfo
 import dialog
 
 
@@ -19,6 +20,7 @@ def doImportTerminologyFile():
     fileName, ok = ImportSettingsDialog().getDialogResult()
     if not ok:
         return
+
 
 
 
@@ -54,9 +56,22 @@ class ImportSettingsDialog(QDialog):
 
     def onBrowse(self):
         """Show the directory selection dialog."""
-        fileName = QFileDialog.getOpenFileName(mw, "Import Directory")
+        fileName = QFileDialog.getOpenFileName(mw, "Import Terminology List")
         if not fileName:
             return
+        if fileName.endswith('.txt'):
+            #   showInfo('Is a text file')
+            txtLines = open(fileName, 'r').readlines()
+
+            self.form.tableWidget.setColumnCount(2)
+            self.form.tableWidget.setRowCount(len(txtLines))
+            nativeLang = QTableWidgetItem("Native")
+            targetLang = QTableWidgetItem("Target")
+            testItem = QTableWidgetItem("Test")
+            self.form.tableWidget.setHorizontalHeaderItem(0, nativeLang)
+            self.form.tableWidget.setHorizontalHeaderItem(1, targetLang)
+            self.form.tableWidget.setItem(1, 1, testItem)
+
         self.terminologyList = fileName
         self.form.terminologyList.setText(self.terminologyList)
         self.form.terminologyList.setStyleSheet("")
@@ -79,6 +94,6 @@ class ImportSettingsDialog(QDialog):
                 self.clearLayout(child.layout())
 
 
-action = QAction("Media Import...", mw)
+action = QAction("Import Terminology", mw)
 mw.connect(action, SIGNAL("triggered()"), doImportTerminologyFile)
 mw.form.menuTools.addAction(action)
