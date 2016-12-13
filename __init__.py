@@ -1,1 +1,0 @@
-from transligator import transligator
