@@ -15,9 +15,12 @@ import dialog
 
 #function to execute when menu item is selected
 def doImportTerminologyFile():
-    (path, model, fieldMap, ok) = ImportSettingsDialog().getDialogResult()
+    # get file from browsing the directory tree
+    fileName, ok = ImportSettingsDialog().getDialogResult()
     if not ok:
         return
+
+
 
 class ImportSettingsDialog(QDialog):
     def __init__(self):
@@ -26,16 +29,18 @@ class ImportSettingsDialog(QDialog):
         self.form.setupUi(self)
         self.form.buttonBox.accepted.connect(self.accept)
         self.form.buttonBox.rejected.connect(self.reject)
-        self.form.btn_browse.clicked.connect(self.onBrowse)
+        self.form.pushButton.clicked.connect(self.onBrowse)
         # The path to the media directory chosen by user
-        self.terminologyDir = None
+        self.terminologyList = None
         # The number of fields in the note type we are using
         self.fieldCount = 0
         self.exec_()
 
     def getDialogResult(self):
+        # TODO: model and dictionary no longer in use, maybe again in future
         """Return a tuple containing the user-defined settings to follow
         for an import. The tuple contains four items (in order):
+
          - Path to chosen media directory
          - The model (note type) to use for new notes
          - A dictionary that maps each of the fields in the model to an
@@ -43,35 +48,24 @@ class ImportSettingsDialog(QDialog):
          - True/False indicating whether the user clicked OK/Cancel"""
 
         if self.result() == QDialog.Rejected:
-            return (None, None, None, False)
+            return None, False
 
-        model = self.form.modelList.currentItem().model
-        # Iterate the grid rows to populate the field map
-        fieldMap = {}
-        grid = self.form.fieldMapGrid
-        for row in range(self.fieldCount):
-            # QLabel with field name
-            field = grid.itemAtPosition(row, 0).widget().text()
-            # QComboBox with index from the action list
-            action = grid.itemAtPosition(row, 1).widget().currentIndex()
-            fieldMap[field] = action
-
-        return (self.terminologyDir, model, fieldMap, True)
+        return self.terminologyList, True
 
     def onBrowse(self):
         """Show the directory selection dialog."""
-        path = QFileDialog.getExistingDirectory(mw, "Import Directory")
-        if not path:
+        fileName = QFileDialog.getOpenFileName(mw, "Import Directory")
+        if not fileName:
             return
-        self.terminologyDir = path
-        self.form.terminologyDir.setText(self.terminologyDir)
-        self.form.terminologyDir.setStyleSheet("")
+        self.terminologyList = fileName
+        self.form.terminologyList.setText(self.terminologyList)
+        self.form.terminologyList.setStyleSheet("")
 
     def accept(self):
         # Show a red warning box if the user tries to import without selecting
         # a directory.
-        if not self.terminologyDir:
-            self.form.terminologyDir.setStyleSheet("border: 1px solid red")
+        if not self.terminologyList:
+            self.form.terminologyList.setStyleSheet("border: 1px solid red")
             return
         QDialog.accept(self)
 
@@ -86,5 +80,5 @@ class ImportSettingsDialog(QDialog):
 
 
 action = QAction("Media Import...", mw)
-mw.connect(action, pyqtSignal("triggered()"), doImportTerminologyFile)
+mw.connect(action, SIGNAL("triggered()"), doImportTerminologyFile)
 mw.form.menuTools.addAction(action)
