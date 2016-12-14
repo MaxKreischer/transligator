@@ -6,3 +6,4 @@ Katze		Cat
 Strauﬂ		Ostrich
 Schnecke	Snail
 Wurm		Worm
+Pferd		Horse
